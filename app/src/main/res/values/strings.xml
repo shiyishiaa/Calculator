@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">Calculator</string>
+    //数字
+    <string name="btn1" translatable="false">1</string>
+    <string name="btn2" translatable="false">2</string>
+    <string name="btn3" translatable="false">3</string>
+    <string name="btn4" translatable="false">4</string>
+    <string name="btn5" translatable="false">5</string>
+    <string name="btn6" translatable="false">6</string>
+    <string name="btn7" translatable="false">7</string>
+    <string name="btn8" translatable="false">8</string>
+    <string name="btn9" translatable="false">9</string>
+    <string name="btn0" translatable="false">0</string>
+    <string name="btnDot" translatable="false">.</string>
+    <string name="btnBracket" translatable="false">( )</string>
+    //运算符
+    <string name="btnAdd" translatable="false">＋</string>
+    <string name="btnMinus" translatable="false">－</string>
+    <string name="btnMulti" translatable="false">×</string>
+    <string name="btnDivide" translatable="false">÷</string>
+    <string name="btnNega" translatable="false">+/-</string>
+    //功能
+    <string name="btnClear" translatable="false">C</string>
+    <string name="btnBack" translatable="false">←</string>
+    <string name="btnEqual" translatable="false">=</string>
+    //菜单
+    <string name="menu">Menu</string>
+    //菜单功能
+    <string name="menu_mode">Mode</string>
+    <string name="menu_language">Language</string>
+    //模式
+    <string name="mode_scientific">Scientific</string>
+    <string name="mode_standard">Standard</string>
+    //语言
+    <string name="language_english" translatable="false">English</string>
+    <string name="language_chinese" translatable="false">中文</string>
+    //语句
+    <string name="factNega">Negatives have no factorial</string>
+    <string name="factDecimal">Decimals have no factorial</string>
+    <string name="divideZero">Divisor cannot be zero</string>
+    <string name="internalError">Internal error</string>
+    <string name="syntaxError">Syntax error</string>
+    <string name="checkBracket">Brackets unmatched</string>
+    //图片按钮
+    <string name="btnSq" translatable="false">x^2</string>
+    <string name="btnSqrt" translatable="false">√</string>
+    <string name="btnFact" translatable="false">!</string>
+    <string name="btnPi" translatable="false">π</string>
+    <string name="btnTan" translatable="false">tan( )</string>
+    <string name="btnCos" translatable="false">cos( )</string>
+    <string name="btnSin" translatable="false">sin( )</string>
+    <string name="btnPercent" translatable="false">%</string>
+    <string name="btnE" translatable="false">e</string>
+    <string name="btnPow" translatable="false">x^y</string>
+    <string name="btnTenPow" translatable="false">10^x</string>
+    <string name="btnEPow" translatable="false">e^x</string>
+    <string name="btnLg" translatable="false">lg( )</string>
+    <string name="btnLn" translatable="false">ln( )</string>
+    <string name="btnArc" translatable="false">arc</string>
+    <string name="btnDegree">Deg</string>
+    <string name="btnRadian">Rad</string>
+    <string name="exit">One more click to exit</string>
+    <string name="sqrtNega">Square root of negatives not supported</string>
+    <string name="inverseTriSinRangeError">Domain exceeded of arcsine</string>
+    <string name="inverseTriCosRangeError">Domain exceeded of arccosine</string>
+    <string name="tanRangeError">Domain exceeded of tangent</string>
+    <string name="logRangeError">Domain exceeded of logarithm</string>
+</resources>

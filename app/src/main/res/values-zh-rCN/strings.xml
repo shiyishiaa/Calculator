@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">计算器</string>
+    //菜单
+    <string name="menu">菜单</string>
+    <string name="menu_mode">模式</string>
+    <string name="menu_language">语言</string>
+    <string name="mode_scientific">科学</string>
+    <string name="mode_standard">标准</string>
+    //语句
+    <string name="factNega">负数没有阶乘</string>
+    <string name="factDecimal">小数没有阶乘</string>
+    <string name="divideZero">0不能作为被除数</string>
+    <string name="internalError">内部错误</string>
+    <string name="syntaxError">语法错误</string>
+    <string name="checkBracket">括号不匹配</string>
+    <string name="btnDegree">角度</string>
+    <string name="btnRadian">弧度</string>
+    <string name="exit">再按一次退出</string>
+    <string name="sqrtNega">不支持负数开方</string>
+    <string name="inverseTriSinRangeError">超出反正弦函数定义域</string>
+    <string name="inverseTriCosRangeError">超出反余弦函数定义域</string>
+    <string name="tanRangeError">超出正切函数定义域</string>
+    <string name="logRangeError">超出对数函数定义域</string>
+</resources>

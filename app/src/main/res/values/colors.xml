@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorStatusBar">#31c27c</color>
+    <color name="colorPrimary">#31c27c</color>
+    <color name="colorPrimaryDark">#31955F</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="disabledBtn">#000000</color>
+    <color name="toastBackground">#7F7F7F</color>
+</resources>

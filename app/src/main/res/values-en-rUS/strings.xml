@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Calculator</string>
+    //菜单
+    <string name="menu">Menu</string>
+    //菜单功能
+    <string name="menu_mode">Mode</string>
+    <string name="menu_language">Language</string>
+    //模式
+    <string name="mode_scientific">Scientific</string>
+    <string name="mode_standard">Standard</string>
+    //语句
+    <string name="factNega">Negatives have no factorial</string>
+    <string name="factDecimal">Decimals have no factorial</string>
+    <string name="divideZero">Divisor cannot be zero</string>
+    <string name="internalError">Internal error</string>
+    <string name="syntaxError">Syntax error</string>
+    <string name="checkBracket">Brackets unmatched</string>
+    <string name="btnDegree">Deg</string>
+    <string name="btnRadian">Rad</string>
+    <string name="exit">One more click to exit</string>
+    <string name="sqrtNega">Square root of negatives not supported</string>
+    <string name="inverseTriSinRangeError">Domain exceeded of arcsine</string>
+    <string name="inverseTriCosRangeError">Domain exceeded of arccosine</string>
+    <string name="tanRangeError">Domain exceeded of tangent</string>
+    <string name="logRangeError">Domain exceeded of logarithm</string>
+</resources>

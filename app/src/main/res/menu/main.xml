@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mode"
+        android:title="@string/menu_mode" >
+        <menu >
+            <item
+                android:id="@+id/Standard"
+                android:title="@string/mode_standard" />
+            <item
+                android:id="@+id/Scientific"
+                android:title="@string/mode_scientific" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/language"
+        android:title="@string/menu_language">
+        <menu>
+            <item
+                android:id="@+id/English"
+                android:title="@string/language_english" />
+            <item
+                android:id="@+id/Chinese"
+                android:title="@string/language_chinese" />
+        </menu>
+    </item>
+</menu>
