@@ -30,7 +30,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.norman.calculator.Function;
+import com.norman.calculator.function;
 import com.norman.calculator.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -362,8 +362,8 @@ public class sciCalculator extends Activity {
      * 成对地输出括号
      */
     private void inputBracket() {
-        calc += (Function.countStr(calc, "(") == 0 ? "(" :
-                (Function.countStr(calc, "(") > Function.countStr(calc, ")") ? ")" : "("));
+        calc += (function.countStr(calc, "(") == 0 ? "(" :
+                (function.countStr(calc, "(") > function.countStr(calc, ")") ? ")" : "("));
         refreshCalc();
     }
 
@@ -556,7 +556,7 @@ public class sciCalculator extends Activity {
         defaultDisplay.getSize(point);
         int screenWidth = point.x;
         //标准单字大小
-        float standardTextSize = Function.sp2px(64, inputWindow.getResources().getDisplayMetrics().scaledDensity);
+        float standardTextSize = function.sp2px(64, inputWindow.getResources().getDisplayMetrics().scaledDensity);
         float suitedTextSize = standardTextSize;
         //如果字体宽度超出屏幕宽度
         if (calc.length() > (screenWidth / standardTextSize)) {
@@ -671,18 +671,18 @@ public class sciCalculator extends Activity {
      * 根据输入获取答案
      */
     private void getAnsSci() {
-        if (Function.isDigit(calc)) return;
-        if (Function.isComplexExpression(calc)) {
+        if (function.isDigit(calc)) return;
+        if (function.isComplexExpression(calc)) {
             //记录表达式
             RecyclerAdapter.addString(calc);
             //左右括号的数目
-            if (Function.countStr(calc, "(") != Function.countStr(calc, ")")) {
+            if (function.countStr(calc, "(") != function.countStr(calc, ")")) {
                 RecyclerAdapter.addString(errorMapSci("BRACKETS_UNMATCH_ERROR"));
                 recordWindow.scrollToPosition(RecyclerAdapter.getItemCount() - 1);
                 return;
             } else {
                 //停止条件是最后只剩下一个数字
-                while (!Function.isDigit(calc)) {
+                while (!function.isDigit(calc)) {
                     String ans;
                     //还存在括号
                     if (calc.contains("(")) {
@@ -692,9 +692,9 @@ public class sciCalculator extends Activity {
                         int RightBracket = calc.indexOf(")", LeftBracket);
                         //里面的表达式
                         String innerExpression = calc.substring(LeftBracket + 1, RightBracket);
-                        ans = Function.evaluateAdvanced(innerExpression, locale, Units);
+                        ans = function.evaluateAdvanced(innerExpression, locale, Units);
                         //把里面的表达式替换成结果，并去掉左右括号
-                        if (Function.isDigit(ans))
+                        if (function.isDigit(ans))
                             calc = calc.substring(0, LeftBracket) + ans + calc.substring(RightBracket + 1);
                         else {
                             RecyclerAdapter.addString(errorMapSci(ans));
@@ -704,8 +704,8 @@ public class sciCalculator extends Activity {
                     }
                     //没有括号
                     else {
-                        ans = Function.evaluateAdvanced(calc, locale, Units);
-                        if (!Function.isDigit(ans)) {
+                        ans = function.evaluateAdvanced(calc, locale, Units);
+                        if (!function.isDigit(ans)) {
                             RecyclerAdapter.addString(errorMapSci(ans));
                             recordWindow.scrollToPosition(RecyclerAdapter.getItemCount() - 1);
                             return;
@@ -742,7 +742,7 @@ public class sciCalculator extends Activity {
         Units = Settings.getString("Units", Units);
         String raw = Settings.getString("locale", Locale.getDefault().getDisplayLanguage());
         assert raw != null;
-        switch (Function.countStr(raw, "_")) {
+        switch (function.countStr(raw, "_")) {
             case 2: {
                 String language = raw.substring(0, raw.indexOf("_"));
                 String country = raw.substring(raw.indexOf("_") + 1, raw.lastIndexOf("_"));

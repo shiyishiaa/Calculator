@@ -10,7 +10,7 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Function {
+public class function {
     private final static BigDecimal PI = new BigDecimal("3.14159265358979323846264338327950288419716939937510" +
             "58209749445923078164062862089986280348253421170679");//π后面100位
     private final static BigDecimal E = new BigDecimal("2.71828182845904523536028747135266249775724709369995" +
