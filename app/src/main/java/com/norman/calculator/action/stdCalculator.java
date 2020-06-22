@@ -19,7 +19,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,31 +30,31 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * @author Norman_Yi
- * @version 2.8.0
+ * @version 2.9.0
  */
 public class stdCalculator extends AppCompatActivity {
     //数字按钮
-    private Button btn0, btn1, btn2, btn3, btn4, btn5,
+    protected Button btn0, btn1, btn2, btn3, btn4, btn5,
             btn6, btn7, btn8, btn9, btnDot, btnMinus;
     //运算符按钮
-    private Button btnAdd, btnMulti, btnDivide, btnNega, btnBracket;
+    protected Button btnAdd, btnMulti, btnDivide, btnNega, btnBracket;
     //功能键按钮
-    private Button btnClear, btnBack, btnEqual;
+    protected Button btnClear, btnBack, btnEqual;
     //菜单按钮
-    private ImageButton btnMenu;
+    protected ImageButton btnMenu;
     //输入框和记录框
-    private TextView inputWindow, appName;
-    private RecyclerView recordWindow;
-    private RecordAdapter RecyclerAdapter;
-    private SharedPreferences Settings;
+    protected TextView inputWindow, appName;
+    protected RecyclerView recordWindow;
+    protected RecordAdapter RecyclerAdapter;
+    protected SharedPreferences Settings;
     //输入框字符串 记录框列表 配置参数
-    private String calc = "";
-    private String Mode = "Standard";
-    private Locale locale = Locale.getDefault();
-    private long firstClick;
+    protected String calc = "";
+    protected String Mode = "Standard";
+    protected Locale locale = Locale.getDefault();
 
     /**
      * 程序入口
@@ -84,6 +83,8 @@ public class stdCalculator extends AppCompatActivity {
         }
         return false;
     }
+
+    protected long firstClick;
 
     /**
      * 退出事件
@@ -137,7 +138,7 @@ public class stdCalculator extends AppCompatActivity {
     /**
      * 将View与函数名绑定
      */
-    private void connectView() {
+    protected void connectView() {
         //数字按钮
         btn0 = findViewById(R.id.btn0);
         btn1 = findViewById(R.id.btn1);
@@ -171,7 +172,7 @@ public class stdCalculator extends AppCompatActivity {
     /**
      * 按钮各自的功能
      */
-    private void btnFunction() {
+    protected void btnFunction() {
         btn0.setOnClickListener(v -> getInput("0"));
         btn1.setOnClickListener(v -> getInput("1"));
         btn2.setOnClickListener(v -> getInput("2"));
@@ -201,11 +202,12 @@ public class stdCalculator extends AppCompatActivity {
     /**
      * 读设置读取数据
      */
-    private void readSettingsStd() {
+    protected void readSettingsStd() {
         Settings = getSharedPreferences("Settings", MODE_PRIVATE);
         calc = Settings.getString("calc", calc);
         Mode = Settings.getString("Mode", Mode);
         String raw = Settings.getString("locale", Locale.getDefault().getDisplayLanguage());
+        assert raw != null;
         switch (Function.countStr(raw, "_")) {
             case 2: {
                 String language = raw.substring(0, raw.indexOf("_"));
@@ -222,7 +224,8 @@ public class stdCalculator extends AppCompatActivity {
             case 0:
                 locale = new Locale(raw);
         }
-        RecyclerAdapter = new RecordAdapter(new ArrayList<>(Settings.getStringSet("adapter", new HashSet<>())));
+        RecyclerAdapter = new RecordAdapter(new ArrayList<>(
+                Objects.requireNonNull(Settings.getStringSet("adapter", new HashSet<>()))));
     }
 
     /**
@@ -241,7 +244,7 @@ public class stdCalculator extends AppCompatActivity {
     /**
      * 刷新标题
      */
-    private void refreshTitleStd() {
+    protected void refreshTitleStd() {
         appName.setText(getString(R.string.app_name));
     }
 
@@ -271,7 +274,7 @@ public class stdCalculator extends AppCompatActivity {
     /**
      * 初始化记录窗口
      */
-    private void initialRecord() {
+    protected void initialRecord() {
         recordWindow.setAdapter(RecyclerAdapter);
         ArrayList<String> record = new ArrayList<>(RecyclerAdapter.getArrayList());
         RecyclerAdapter.clearString();
@@ -285,7 +288,7 @@ public class stdCalculator extends AppCompatActivity {
      *
      * @param keyString 输入字符
      */
-    private void getInput(String keyString) {
+    protected void getInput(String keyString) {
         calc += keyString;
         refreshCalc();
     }
@@ -293,7 +296,7 @@ public class stdCalculator extends AppCompatActivity {
     /**
      * 成对地输出括号
      */
-    private void inputBracket() {
+    protected void inputBracket() {
         calc += (Function.countStr(calc, "(") == 0 ? "(" :
                 (Function.countStr(calc, "(") > Function.countStr(calc, ")") ? ")" : "("));
         refreshCalc();
@@ -304,7 +307,7 @@ public class stdCalculator extends AppCompatActivity {
      *
      * @param view 菜单对象
      */
-    private void showPopupMenu(View view) {
+    protected void showPopupMenu(View view) {
         final PopupMenu popupMenu = new PopupMenu(this, view);
         //Menu布局
         popupMenu.getMenuInflater().inflate(R.menu.main, popupMenu.getMenu());
@@ -346,7 +349,7 @@ public class stdCalculator extends AppCompatActivity {
     /**
      * 删除输入
      */
-    private void backSpaceStd() {
+    protected void backSpaceStd() {
         if (!calc.isEmpty()) {
             if (calc.endsWith("sin(") | calc.endsWith("cos(") | calc.endsWith("tan(")) {
                 calc = calc.substring(0, calc.length() - 4);
@@ -365,7 +368,7 @@ public class stdCalculator extends AppCompatActivity {
     /**
      * 清除记录
      */
-    private void clearRecordStd() {
+    protected void clearRecordStd() {
         if (!calc.isEmpty()) {
             calc = "";
             refreshCalc();
@@ -377,7 +380,7 @@ public class stdCalculator extends AppCompatActivity {
     /**
      * 根据输入获取答案
      */
-    private void getAnsStd() {
+    protected void getAnsStd() {
         if (Function.isDigit(calc)) return;
         if (Function.isExpression(calc)) {
             //记录表达式
@@ -422,12 +425,12 @@ public class stdCalculator extends AppCompatActivity {
                     }
                 }
                 BigDecimal ans = new BigDecimal(calc);
-                RecyclerAdapter.addString(ans.toPlainString());
-                if (ans.compareTo(BigDecimal.ZERO) == 0) {
+                ans = ans.setScale(8, BigDecimal.ROUND_HALF_UP);
+                if (ans.doubleValue() == 0)
                     ans = BigDecimal.ZERO;
-                } else {
-                    ans = ans.setScale(8, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
-                }
+                else
+                    ans = ans.stripTrailingZeros();
+                RecyclerAdapter.addString(ans.toPlainString());
                 calc = ans.toPlainString();
             }
             //刷新界面
@@ -444,7 +447,8 @@ public class stdCalculator extends AppCompatActivity {
      *
      * @param mode 标准计算器/科学计算器
      */
-    private void changeMode(@NonNull String mode) {
+    protected void changeMode(String mode) {
+        if (mode == null) mode = "Standard";
         switch (mode) {
             case "Standard":
                 Mode = "Standard";
@@ -464,7 +468,7 @@ public class stdCalculator extends AppCompatActivity {
     /**
      * 写设置保存数据
      */
-    private void writeSettings() {
+    protected void writeSettings() {
         Settings = getSharedPreferences("Settings", MODE_PRIVATE);
         SharedPreferences.Editor editor = Settings.edit();
         editor.putString("calc", calc);
@@ -480,7 +484,8 @@ public class stdCalculator extends AppCompatActivity {
      * @param error 错误类型
      * @return 错误语句
      */
-    private String errorMapStd(String error) {
+    protected String errorMapStd(String error) {
+        if (error == null) error = "";
         switch (error) {
             case "DIVISOR_ZERO_ERROR":
                 return getString(R.string.divideZero);

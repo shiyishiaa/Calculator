@@ -27,21 +27,23 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.norman.calculator.Function;
 import com.norman.calculator.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * @author Norman_Yi
- * @version 2.8.0
+ * @version 2.9.0
  */
 public class sciCalculator extends Activity {
     //数字按钮
@@ -70,10 +72,11 @@ public class sciCalculator extends Activity {
     private Locale locale = Locale.getDefault();
     private long firstClick;
     //反三角函数禁用按钮时用到
+    @SuppressWarnings("ConstantConditions")
     private Button[] arcDisabledBtn = new Button[]{btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btnDot, btnMinus,
             btnAdd, btnMulti, btnDivide, btnNega, btnBracket, btnEqual, btnPi, btnSq, btnSqrt, btnPow,
             btnEPow, btnTenPow, btnPercent, btnFact, btnE, btnLn, btnLg};
-    private ColorStateList[] disabledBtnColor = new ColorStateList[arcDisabledBtn.length];
+    private final ColorStateList[] disabledBtnColor = new ColorStateList[arcDisabledBtn.length];
 
     /**
      * 程序入口
@@ -215,6 +218,7 @@ public class sciCalculator extends Activity {
      * @param units 单位名
      */
     private void switchUnits(String units) {
+        if (units == null) units = "Degree";
         switch (units) {
             case "Degree": {
                 btnRadian.setTextColor(getResources().getColor(R.color.disabledBtn));
@@ -449,7 +453,8 @@ public class sciCalculator extends Activity {
      *
      * @param btn 需要改变的按钮
      */
-    private void specialStyleSet(@NonNull Button btn) {
+    private void specialStyleSet(Button btn) {
+        if (btn == null) return;
         SpannableString spannableString;
         //字体
         Typeface TimesBold = Typeface.createFromAsset(getAssets(), "fonts/timesbd.ttf");
@@ -581,7 +586,8 @@ public class sciCalculator extends Activity {
      *
      * @param mode 标准计算器/科学计算器
      */
-    private void changeMode(@NonNull String mode) {
+    private void changeMode(String mode) {
+        if (mode == null) mode = "Scientific";
         switch (mode) {
             case "Scientific":
                 Mode = "Scientific";
@@ -709,12 +715,12 @@ public class sciCalculator extends Activity {
                     }
                 }
                 BigDecimal ans = new BigDecimal(calc);
-                RecyclerAdapter.addString(ans.toPlainString());
-                if (ans.compareTo(BigDecimal.ZERO) == 0) {
+                ans = ans.setScale(8, BigDecimal.ROUND_HALF_UP);
+                if (ans.doubleValue() == 0)
                     ans = BigDecimal.ZERO;
-                } else {
-                    ans = ans.setScale(8, BigDecimal.ROUND_HALF_UP).stripTrailingZeros();
-                }
+                else
+                    ans = ans.stripTrailingZeros();
+                RecyclerAdapter.addString(ans.toPlainString());
                 calc = ans.toPlainString();
             }
             //刷新界面
@@ -735,6 +741,7 @@ public class sciCalculator extends Activity {
         Mode = Settings.getString("Mode", Mode);
         Units = Settings.getString("Units", Units);
         String raw = Settings.getString("locale", Locale.getDefault().getDisplayLanguage());
+        assert raw != null;
         switch (Function.countStr(raw, "_")) {
             case 2: {
                 String language = raw.substring(0, raw.indexOf("_"));
@@ -751,7 +758,8 @@ public class sciCalculator extends Activity {
             case 0:
                 locale = new Locale(raw);
         }
-        RecyclerAdapter = new RecordAdapter(new ArrayList<>(Settings.getStringSet("adapter", new HashSet<>())));
+        RecyclerAdapter = new RecordAdapter(new ArrayList<>(
+                Objects.requireNonNull(Settings.getStringSet("adapter", new HashSet<>()))));
     }
 
     /**
@@ -760,8 +768,9 @@ public class sciCalculator extends Activity {
      * @param error 错误类型
      * @return 错误语句
      */
-    @NonNull
+    @NotNull
     private String errorMapSci(String error) {
+        if (error == null) error = "";
         switch (error) {
             case "DIVISOR_ZERO_ERROR":
                 return getString(R.string.divideZero);

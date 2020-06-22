@@ -1,10 +1,5 @@
 package com.norman.calculator;
 
-import android.os.Build;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
@@ -16,6 +11,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Function {
+    private final static BigDecimal PI = new BigDecimal("3.14159265358979323846264338327950288419716939937510" +
+            "58209749445923078164062862089986280348253421170679");//π后面100位
+    private final static BigDecimal E = new BigDecimal("2.71828182845904523536028747135266249775724709369995" +
+            "95749669676277240766303535475945713821785251664274");//e后面100位
+
     /**
      * 字符串中出现子字符串的次数
      *
@@ -24,7 +24,7 @@ public class Function {
      * @return 个数
      */
     public static int countStr(String str, String sToFind) {
-        if (str==null) return 0;
+        if (str == null) return 0;
         int num = 0;
         while (str.contains(sToFind)) {
             str = str.substring(str.indexOf(sToFind) + sToFind.length());
@@ -47,6 +47,7 @@ public class Function {
     /**
      * 判断一个表达式是不是有括号的简单表达式
      */
+    @SuppressWarnings({"ConstantConditions", "MismatchedReadAndWriteOfArray"})
     public static boolean isExpression(String str) {
         boolean pass = true;
         //表达式是否合法
@@ -75,8 +76,10 @@ public class Function {
      * @param str 表达式
      * @return 结果
      */
+    @SuppressWarnings({"ConstantConditions", "MismatchedReadAndWriteOfArray"})
     public static boolean isComplexExpression(String str) {
         boolean pass = true;
+        if (isExpression(str)) return true;
         //表达式是否合法
         Pattern rightExpression = Pattern.compile("^(\\(*(((arc)?(sin\\(|cos\\(|tan\\())|(ln\\(|lg\\())*√*((-?[0-9]+\\.?[0-9]*)|e|π)!*%*\\)*[＋－×÷^])*" +
                 "(\\(*(((arc)?(sin\\(|cos\\(|tan\\())|(ln\\(|lg\\())?√*(\\(*-?[0-9]+\\.?[0-9]*|e|π)!*%*)\\)*$");//正确表达式（有Bug）
@@ -104,13 +107,13 @@ public class Function {
      * @return 结果字符串
      */
     public static String evaluateAdvanced(String calc, Locale locale, String Units) {
-        while (!(Function.isSimpleExpression(calc) | Function.isDigit(calc))) {
+        while (!(isSimpleExpression(calc) | isDigit(calc))) {
             Pattern pattern;
             Matcher matcher;
             //圆周率、自然常数
             while (calc.contains("π") | calc.contains("e")) {
-                calc = calc.replace("π", new BigDecimal(Math.PI).toPlainString());
-                calc = calc.replace("e", new BigDecimal(Math.E).toPlainString());
+                calc = calc.replace("π", PI.toPlainString());
+                calc = calc.replace("e", E.toPlainString());
             }
             //阶乘
             while (calc.contains("!")) {
@@ -119,8 +122,8 @@ public class Function {
                 if (matcher.find()) {
                     BigDecimal base = new BigDecimal(Objects.requireNonNull(matcher.group(0)).replace("!", ""));
                     BigDecimal fact = BigDecimal.ONE;
-                    if (Function.isInteger(base)) {
-                        if (Function.moreThan(base, BigDecimal.ZERO)) {
+                    if (isInteger(base)) {
+                        if (moreThan(base, BigDecimal.ZERO)) {
                             for (BigDecimal i = new BigDecimal("2"); i.compareTo(base) <= 0; i = i.add(BigDecimal.ONE)) {
                                 fact = fact.multiply(i);
                             }
@@ -141,7 +144,7 @@ public class Function {
                 matcher = pattern.matcher(calc);
                 if (matcher.find()) {
                     BigDecimal base = new BigDecimal(matcher.group(1));
-                    if (Function.lessThan(base, BigDecimal.ZERO))
+                    if (lessThan(base, BigDecimal.ZERO))
                         return "SQUARE_ROOT_NEGATIVES_ERROR";
                     calc = calc.substring(0, matcher.start()) + Math.sqrt(base.doubleValue()) + calc.substring(matcher.end());
                     matcher.reset();
@@ -180,24 +183,24 @@ public class Function {
                     BigDecimal ans = new BigDecimal("0");
                     switch (Objects.requireNonNull(matcher.group(1))) {
                         case "sin": {
-                            if (Function.moreThan(opnd, BigDecimal.ONE) | Function.lessThan(opnd, BigDecimal.ONE.negate()))
+                            if (moreThan(opnd, BigDecimal.ONE) | lessThan(opnd, BigDecimal.ONE.negate()))
                                 return "INVERSE_TRIANGLE_SIN_OUT_OF_RANGE_ERROR";
-                            ans = new BigDecimal(Math.asin(opnd.doubleValue()));
+                            ans = BigDecimal.valueOf(Math.asin(opnd.doubleValue()));
                             break;
                         }
                         case "cos": {
-                            if (Function.moreThan(opnd, BigDecimal.ONE) | Function.lessThan(opnd, BigDecimal.ONE.negate()))
+                            if (moreThan(opnd, BigDecimal.ONE) | lessThan(opnd, BigDecimal.ONE.negate()))
                                 return "INVERSE_TRIANGLE_COS_OUT_OF_RANGE_ERROR";
-                            ans = new BigDecimal(Math.acos(opnd.doubleValue()));
+                            ans = BigDecimal.valueOf(Math.acos(opnd.doubleValue()));
                             break;
                         }
                         case "tan": {
-                            ans = new BigDecimal(Math.atan(opnd.doubleValue()));
+                            ans = BigDecimal.valueOf(Math.atan(opnd.doubleValue()));
                             break;
                         }
                     }
                     if (Units.equals("Degree"))
-                        ans = new BigDecimal(Math.toDegrees(ans.doubleValue()));
+                        ans = BigDecimal.valueOf(Math.toDegrees(ans.doubleValue()));
                     calc = calc.substring(0, matcher.start()) + ans.toPlainString() + calc.substring(matcher.end());
                     matcher.reset();
                 } else
@@ -210,21 +213,21 @@ public class Function {
                 if (matcher.find()) {
                     BigDecimal opnd = new BigDecimal(matcher.group(2));
                     if (Units.equals("Degree"))
-                        opnd = new BigDecimal(Math.toRadians(opnd.doubleValue()));
+                        opnd = BigDecimal.valueOf(Math.toRadians(opnd.doubleValue()));
                     BigDecimal ans = new BigDecimal("0");
                     switch (Objects.requireNonNull(matcher.group(1))) {
                         case "sin": {
-                            ans = new BigDecimal(Math.sin(opnd.doubleValue()));
+                            ans = BigDecimal.valueOf(Math.sin(opnd.doubleValue()));
                             break;
                         }
                         case "cos": {
-                            ans = new BigDecimal(Math.cos(opnd.doubleValue()));
+                            ans = BigDecimal.valueOf(Math.cos(opnd.doubleValue()));
                             break;
                         }
                         case "tan": {
-                            if (Function.isInteger(opnd.multiply(BigDecimal.valueOf(Math.PI)).add(BigDecimal.valueOf(0.5f))))
+                            if (isInteger(opnd.multiply(BigDecimal.valueOf(Math.PI)).add(BigDecimal.valueOf(0.5f))))
                                 return "TAN_OUT_OF_RANGE_ERROR";
-                            ans = new BigDecimal(Math.tan(opnd.doubleValue()));
+                            ans = BigDecimal.valueOf(Math.tan(opnd.doubleValue()));
                             break;
                         }
                     }
@@ -244,11 +247,11 @@ public class Function {
                     BigDecimal ans = new BigDecimal("0");
                     switch (Objects.requireNonNull(matcher.group(1))) {
                         case "ln": {
-                            ans = new BigDecimal(Math.log(opnd.doubleValue()));
+                            ans = BigDecimal.valueOf(Math.log(opnd.doubleValue()));
                             break;
                         }
                         case "lg": {
-                            ans = new BigDecimal(Math.log10(opnd.doubleValue()));
+                            ans = BigDecimal.valueOf(Math.log10(opnd.doubleValue()));
                             break;
                         }
                     }
@@ -258,7 +261,7 @@ public class Function {
                     break;
             }
         }
-        if (Function.isDigit(calc))
+        if (isDigit(calc))
             return calc;
         return evaluatePrime(calc);
     }
@@ -269,7 +272,8 @@ public class Function {
      * @param str 需要判断的字符串
      * @return 结果
      */
-    public static boolean isSimpleExpression(@NonNull String str) {
+    public static boolean isSimpleExpression(String str) {
+        if (str == null) return false;
         return str.matches("^(-?[0-9]+\\.?[0-9]*[＋－×÷])*-?[0-9]+\\.?[0-9]*$");
     }
 
@@ -279,7 +283,8 @@ public class Function {
      * @param str 需要判断的字符串
      * @return 结果
      */
-    public static boolean isDigit(@NonNull String str) {
+    public static boolean isDigit(String str) {
+        if (str == null) return false;
         return str.matches("^-?[0-9]+\\.?[0-9]*$");
     }
 
@@ -302,7 +307,8 @@ public class Function {
      * @param numAfter  后边一个数
      * @return 结果
      */
-    public static boolean moreThan(@NonNull BigDecimal numBefore, BigDecimal numAfter) {
+    public static boolean moreThan(BigDecimal numBefore, BigDecimal numAfter) {
+        if (numBefore == null) return false;
         return numBefore.compareTo(numAfter) > 0;
     }
 
@@ -313,7 +319,8 @@ public class Function {
      * @param numAfter  后边一个数
      * @return 结果
      */
-    public static boolean lessThan(@NonNull BigDecimal numBefore, BigDecimal numAfter) {
+    public static boolean lessThan(BigDecimal numBefore, BigDecimal numAfter) {
+        if (numBefore == null) return false;
         return numBefore.compareTo(numAfter) < 0;
     }
 
@@ -323,7 +330,6 @@ public class Function {
      * @param calc 输入
      * @return 结果字符串
      */
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static String evaluatePrime(String calc) {
         StringBuilder str = new StringBuilder(calc);
         Stack<BigDecimal> opnd = new Stack<>();
@@ -372,7 +378,7 @@ public class Function {
                     switch (opLocal) {
                         case '^': {
                             BigDecimal num2 = opnd.pop(), num1 = opnd.pop();
-                            opnd.push(new BigDecimal(Math.pow(num1.doubleValue(), num2.doubleValue())));
+                            opnd.push(BigDecimal.valueOf(Math.pow(num1.doubleValue(), num2.doubleValue())));
                             break;
                         }
                         //加法

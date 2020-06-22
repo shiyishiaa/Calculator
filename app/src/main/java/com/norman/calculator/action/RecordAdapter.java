@@ -13,14 +13,10 @@ import com.norman.calculator.R;
 import java.util.ArrayList;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder> {
-    private ArrayList<String> mArrayList;
+    private final ArrayList<String> mArrayList;
 
     RecordAdapter(ArrayList<String> arrayList) {
         mArrayList = arrayList;
-    }
-
-    RecordAdapter() {
-        mArrayList = new ArrayList<>();
     }
 
     @NonNull
@@ -32,7 +28,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.list.setText((CharSequence) mArrayList.get(position));
+        holder.list.setText(mArrayList.get(position));
     }
 
     @Override
@@ -40,18 +36,18 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         return mArrayList.size();
     }
 
+    void addString(String str) {
+        mArrayList.add(str);
+        notifyItemInserted(mArrayList.size() - 1);
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView list;
+        final TextView list;
 
         ViewHolder(View view) {
             super(view);
             list = view.findViewById(R.id.list);
         }
-    }
-
-    void addString(String str) {
-        mArrayList.add(str);
-        notifyItemInserted(mArrayList.size()-1);
     }
 
     void insertString(int position, String str) {

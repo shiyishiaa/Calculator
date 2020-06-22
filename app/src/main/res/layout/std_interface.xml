@@ -7,7 +7,6 @@
     tools:context=".action.stdCalculator">
 
     <LinearLayout
-        android:id="@+id/mainLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -17,7 +16,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/titleBar"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:background="@color/colorStatusBar"
@@ -64,14 +62,12 @@
             android:textSize="64sp" />
 
         <LinearLayout
-            android:id="@+id/keyLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:orientation="vertical">
 
             <TableRow
-                android:id="@+id/line0"
                 style="?android:attr/buttonBarStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -170,7 +166,6 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/line2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -264,7 +259,6 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/line4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

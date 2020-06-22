@@ -6,13 +6,18 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * @author Norman Yi
+ * @version 1.0
+ */
 public class preConfig extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences Settings = getSharedPreferences("Settings", MODE_PRIVATE);
-        String mode = Settings.getString("Mode", "Standard");
-        changeMode(mode);
+        String Mode = Settings.getString("Mode", "Standard");
+        assert Mode != null;
+        changeMode(Mode);
     }
 
     private void changeMode(String mode) {
